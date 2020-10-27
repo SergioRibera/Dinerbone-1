@@ -8,19 +8,19 @@ app = Flask(__name__)
 api = Api(app)
 
 class User(Resource):
-    def get(self):
-        return jsonify({ 'name': 'Sergio Ribera' })
+    def get(self, mail, psw):
+        response = {
+            'status': 405,
+            'msg': 'Ha ocurrido un error inesperado',
+            'res': {}
+        }
+        response["res"] = {
+            'mail': mail,
+            'pass': psw
+        }
+        return jsonify(response)
 
-#class Employees(Resource):
-#    def get(self):
-        #conn = db_connect.connect() # connect to database
-        #query = conn.execute("select * from employees") # This line performs query and returns json result
-        #return {'employees': [i[0] for i in query.cursor.fetchall()]} # Fetches first column that is Employee ID
-
-api.add_resource(User, '/user') # Route_1
-#api.add_resource(Tracks, '/tracks') # Route_2
-#api.add_resource(Employees_Name, '/employees/<employee_id>') # Route_3
-
+api.add_resource(User, '/user/<mail>/<psw>') # Route_1
 
 if __name__ == '__main__':
      app.run(port='5002')
