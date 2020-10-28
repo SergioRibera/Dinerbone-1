@@ -1,10 +1,18 @@
+import sys
+sys.path.append(".")
 from flask import Flask, request, jsonify
 from flask_restful import Resource, Api
-from sqlalchemy import create_engine
 from json import dumps
+from database import *
 
-#db_connect = create_engine('sqlite:///chinook.db')
+# Conectamos con la Base de Datos
+conn = createConnection()
+# creamos la tabla Usuarios
+createTable(conn, sql_create_user_table)
+
+#creamos la aplicacion
 app = Flask(__name__)
+# creamos la Api
 api = Api(app)
 
 class User(Resource):
@@ -13,10 +21,6 @@ class User(Resource):
             'status': 405,
             'msg': 'Ha ocurrido un error inesperado',
             'res': {}
-        }
-        response["res"] = {
-            'mail': mail,
-            'pass': psw
         }
         return jsonify(response)
 
